@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>My Core · 3</title>
+  <style>
+    body { background:#111; color:#fff; font-family:Arial; padding:20px; }
+    .box { background:#222; padding:20px; border-radius:10px; }
+    h1 { color:#0ff; }
+  </style>
+</head>
+<body>
+
+<h1>My Core · 3</h1>
+<div class="box">
+  <p><strong>Identität:</strong> Ridvan</p>
+  <p><strong>Achse:</strong> 3 (Basis)</p>
+  <p><strong>Lebensenergie:</strong> 8192 RAM</p>
+  <p><strong>Aktiver Verbrauch:</strong> 2048 USED</p>
+  <p><strong>Freie Energie:</strong> 6144 FREE</p>
+  <p><strong>Pumpe:</strong> Aktiv</p>
+</div>
+
+<script type="module">
+  import { TMP6D } from "./round.js";
+
+  const core = TMP6D([3,9,27,81,243,756]);
+  console.log("CORE:", core.raw);
+</script>
+
+</body>
+</html>
