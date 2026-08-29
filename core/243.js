@@ -31,3 +31,4 @@ export const stateProxy = new Proxy({}, {
     return getState(prop);
   }
 });
+export const ACHSE_243 = { value: 243, label: "KANAL", type: "channel" };
