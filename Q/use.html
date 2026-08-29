@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>My Base · 9</title>
+  <style>
+    body { background:#111; color:#fff; font-family:Arial; padding:20px; }
+    .box { background:#222; padding:20px; border-radius:10px; }
+    h1 { color:#0f0; }
+  </style>
+</head>
+<body>
+
+<h1>My Base · 9</h1>
+<div class="box">
+  <p><strong>Struktur:</strong> 9‑Achse</p>
+  <p><strong>Nutzung:</strong> Wie du deine Stadt verwendest</p>
+  <p><strong>360°‑Grad:</strong> Strukturpunkte</p>
+  <p><strong>Flow:</strong> Verbindung zu Arbeit, Leben, Freizeit</p>
+</div>
+
+<script type="module">
+  import { TMP6D } from "./round.js";
+
+  const base = TMP6D([3,9,27,81,243,756]);
+  console.log("BASE:", base.struct);
+</script>
+
+</body>
+</html>
