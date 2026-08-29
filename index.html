@@ -1,375 +1,499 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- EVO-GEOLEGAL -->
-    <meta name="author" content="iki1uc (Ridvan)">
-    <meta name="license" content="MIT - Nutzung erlaubt. Logik-Reproduktion verboten.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌀 LEBEN VERALGORITHMIESIERT · 756 ACHSEN</title>
 
-    <title>🌀 EARN KERNEL · DAS WAHRE LEBEN</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #0a0a12;
+  color: #d0d9e6;
+  font-family: 'Consolas', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: radial-gradient(ellipse at 50% 0%, #0a0a20, #000000);
+}
+.container {
+  max-width: 1400px;
+  width: 100%;
+  background: rgba(10,14,20,0.4);
+  border: 1px solid rgba(0,200,255,0.03);
+  border-radius: 24px;
+  padding: 24px;
+  backdrop-filter: blur(6px);
+}
 
-    <style>
-        body {
-            background: #0a0a0f;
-            color: #0f0;
-            font-family: 'Consolas', monospace;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            min-height: 100vh;
-        }
+.header {
+  text-align: center;
+  border-bottom: 2px solid rgba(0,200,255,0.08);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  background: linear-gradient(90deg, #00ccff, #ff66ff, #00ff88, #ffaa00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header .sub {
+  color: #3d5a70;
+  font-size: 10px;
+  letter-spacing: 4px;
+}
 
-        header {
-            border: 2px solid #ffd700;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(0,0,0,0.2));
-        }
-        header h1 {
-            font-size: 24px;
-            background: linear-gradient(90deg, #ffd700, #ff44ff, #00ccff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 4px;
-            margin: 0;
-        }
-        header p {
-            font-size: 10px;
-            color: #888;
-            margin: 5px 0 0 0;
-            letter-spacing: 2px;
-        }
+/* STATUS */
+.status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  font-size: 9px;
+  border: 1px solid rgba(0,200,255,0.02);
+}
+.status-bar .item { display: flex; align-items: center; gap: 4px; }
+.status-bar .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.status-bar .dot.on { background: #00ff88; box-shadow: 0 0 8px #00ff8844; }
+.status-bar .dot.pulse { background: #00ccff; animation: dotPulse 1.5s infinite; }
+@keyframes dotPulse { 0%,100%{opacity:0.4;transform:scale(0.9)} 50%{opacity:1;transform:scale(1.2)} }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-        .grid-6 {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-        }
+/* CANVAS */
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: rgba(0,0,0,0.3);
+  border-radius: 16px;
+  border: 1px solid rgba(0,200,255,0.03);
+  overflow: hidden;
+}
+#lifeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
-        .panel {
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .panel h2 {
-            font-size: 14px;
-            color: #ffd700;
-            margin: 0;
-            border-bottom: 1px solid #333;
-            padding-bottom: 6px;
-        }
+/* AXIS-GRID */
+.axis-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin: 12px 0;
+}
+@media (max-width:700px){ .axis-grid { grid-template-columns: repeat(3,1fr); } }
+.axis-card {
+  background: rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,200,255,0.03);
+  border-radius: 10px;
+  padding: 8px 6px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.axis-card .label { font-size: 7px; color: #445555; text-transform: uppercase; letter-spacing: 1px; }
+.axis-card .value { font-size: 18px; font-weight: bold; }
+.axis-card .status { font-size: 8px; margin-top: 2px; }
+.axis-card .status.live { color: #00ff88; }
+.axis-card .status.float { color: #ffaa00; }
 
-        .cmd-bar {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .cmd {
-            background: #0a0a0f;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            flex: 1;
-            min-width: 50px;
-            transition: 0.3s;
-        }
-        .cmd.active {
-            border-color: #ff6b8a;
-            box-shadow: 0 0 15px rgba(255,107,138,0.3);
-            color: #ff6b8a;
-        }
+/* CONTROLS */
+.controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
+}
+.controls button {
+  background: rgba(20,35,45,0.2);
+  color: #668888;
+  border: 1px solid rgba(0,200,255,0.04);
+  padding: 6px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  transition: all 0.3s;
+}
+.controls button:hover {
+  background: rgba(40,80,100,0.08);
+  color: #aaeedd;
+}
+.controls button.primary { border-color: rgba(255,215,0,0.1); color: #ffd700; }
+.controls button.quandt { border-color: rgba(255,102,255,0.1); color: #ff66ff; }
 
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: #888;
-            border-bottom: 1px dashed #333;
-            padding-bottom: 4px;
-        }
-        .stat-row b { color: #0f0; }
+/* LOG */
+.log {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 8px;
+  color: #3d5a70;
+  max-height: 80px;
+  overflow-y: auto;
+  border: 1px solid rgba(0,200,255,0.02);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+.log .hl { color: #7fc9ff; }
+.log .ok { color: #00ff88; }
+.log .flow { color: #00ccff; }
+.log .whirl { color: #ff66ff; }
 
-        .log {
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 10px;
-            color: #888;
-            height: 150px;
-            overflow-y: auto;
-            line-height: 1.6;
-        }
-
-        button {
-            background: #1a1a2a;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 100%;
-        }
-        button:hover { border-color: #ffd700; color: #ffd700; }
-        button.main { font-size: 14px; border-color: #ffd700; color: #ffd700; }
-        button.main:hover { background: #ffd700; color: #000; }
-
-        .e-module {
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            background: #0e0e1a;
-        }
-        .e-module:hover { border-color: #ffd700; background: rgba(255,215,0,0.05); }
-        .e-module.active { border-color: #ff6b8a; background: rgba(255,107,138,0.05); }
-        .e-module .label { font-size: 12px; font-weight: bold; color: #aaa; }
-        .e-module .desc { font-size: 8px; color: #666; margin-top: 2px; }
-
-        footer {
-            text-align: center;
-            color: #333;
-            font-size: 9px;
-            padding-top: 8px;
-            border-top: 1px solid #222;
-        }
-    </style>
+.footer {
+  text-align: center;
+  font-size: 7px;
+  color: #1f2a36;
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
+.footer span { color: #00ccff; }
+</style>
 </head>
 <body>
 
-<header>
-    <h1>🌀 EARN KERNEL · DAS WAHRE LEBEN</h1>
-    <p>6E-SYSTEM · EVOMIND → ECOTAAL → EVOCITY → OUR EARN → EVOMARKT → NEWADA</p>
-</header>
+<div class="container">
 
-<!-- 6E MODULE -->
-<div class="grid-6">
-    <div class="e-module" data-id="evomind">
-        <div class="label">🧠 evomind</div>
-        <div class="desc">Achse 3 · Core</div>
-    </div>
-    <div class="e-module" data-id="ecotaal">
-        <div class="label">🗣️ ecotaal</div>
-        <div class="desc">Achse 9 · Struktur</div>
-    </div>
-    <div class="e-module" data-id="evocity">
-        <div class="label">🏙️ evocity</div>
-        <div class="desc">Achse 27 · Muster</div>
-    </div>
-    <div class="e-module" data-id="our_earn">
-        <div class="label">💰 our earn</div>
-        <div class="desc">Achse 81 · Wetter</div>
-    </div>
-    <div class="e-module" data-id="evomarkt">
-        <div class="label">📈 evomarkt</div>
-        <div class="desc">Achse 243 · Flow</div>
-    </div>
-    <div class="e-module" data-id="newada">
-        <div class="label">✨ newada</div>
-        <div class="desc">Achse 756 · Evolution</div>
-    </div>
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🌀 LEBEN VERALGORITHMIESIERT</h1>
+    <div class="sub">3 · 9 · 27 · 81 · 243 · 756 · NICHT EGAL</div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-bar">
+    <span class="item"><span class="dot on"></span> LEBENDIG</span>
+    <span class="item"><span class="dot pulse"></span> 756 ACHSEN</span>
+    <span class="item">❤️ <span id="pulseStatus">0.00</span></span>
+    <span class="item">🌀 <span id="synStatus">0.00</span></span>
+    <span class="item">🧠 <span id="freundStatus">0.00</span></span>
+    <span class="item">💰 <span id="earnStatus">0.00</span></span>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="canvas-wrap">
+    <canvas id="lifeCanvas"></canvas>
+  </div>
+
+  <!-- AXIS-GRID -->
+  <div class="axis-grid" id="axisGrid">
+    <div class="axis-card" data-axis="3"><div class="label">🌀 UR</div><div class="value" style="color:#ff4444;" id="axis-3">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="axis-card" data-axis="9"><div class="label">🌀 KERN</div><div class="value" style="color:#ffaa00;" id="axis-9">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="axis-card" data-axis="27"><div class="label">🌀 ORBIT</div><div class="value" style="color:#00ff88;" id="axis-27">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="axis-card" data-axis="81"><div class="label">🌀 RAUM</div><div class="value" style="color:#00ccff;" id="axis-81">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="axis-card" data-axis="243"><div class="label">🌀 KANAL</div><div class="value" style="color:#ff66ff;" id="axis-243">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="axis-card" data-axis="756"><div class="label">🌀 LEBEN</div><div class="value" style="color:#ffd700;" id="axis-756">0.00</div><div class="status float">● schwebend</div></div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="primary" id="btnStart">▶ START</button>
+    <button class="quandt" id="btnQuandt">🌀 QUANDT</button>
+    <button id="btnPulse">❤️ PULS</button>
+    <button id="btnReset">⟲ RESET</button>
+  </div>
+
+  <!-- LOG -->
+  <div class="log" id="log">
+    <div>[🌀] LEBEN VERALGORITHMIESIERT · 756 ACHSEN · bereit</div>
+  </div>
+
+  <div class="footer">🌀 LEBEN VERALGORITHMIESIERT · NICHT EGAL · <span>wieimmer4u</span></div>
+
 </div>
-
-<!-- RITH & NEWADA STATUS -->
-<div class="grid-3">
-    <div class="panel">
-        <h2>🌀 RITH WERT</h2>
-        <div style="font-size: 48px; text-align: center; color: #6bffa9; text-shadow: 0 0 20px rgba(107,255,169,0.3);" id="rithWert">4</div>
-    </div>
-    <div class="panel">
-        <h2>✨ NEWADA</h2>
-        <div class="stat-row"><span>Status:</span> <b id="newadaState">IDLE</b></div>
-        <div class="stat-row"><span>Orbit:</span> <b id="newadaOrbit">PASSIV</b></div>
-        <div class="stat-row"><span>EARN:</span> <b id="earnValue">0.00</b></div>
-    </div>
-    <div class="panel">
-        <h2>⚡ TYQ BOOT</h2>
-        <div class="stat-row"><span>Status:</span> <b id="bootState">READY</b></div>
-        <div class="stat-row"><span>RAM:</span> <b id="ramAlloc">0</b></div>
-        <button onclick="bootTYQ()">⚡ TYQ BOOT</button>
-    </div>
-</div>
-
-<!-- PIPELINE + EVO -->
-<div class="grid-3">
-    <div class="panel">
-        <h2>🌀 PIPELINE</h2>
-        <div class="cmd-bar">
-            <div class="cmd" data-id="p0">P0</div>
-            <div class="cmd" data-id="p1">P1</div>
-            <div class="cmd" data-id="p2">P2</div>
-        </div>
-        <button class="main" onclick="runPipeline()">🌀 PIPELINE RUN</button>
-    </div>
-    <div class="panel">
-        <h2>🔮 REV</h2>
-        <div class="stat-row"><span>Score:</span> <b id="revScore">0</b></div>
-        <div class="stat-row"><span>Emotion:</span> <b id="revEmotion">NEUTRAL</b></div>
-        <button onclick="runRev()">🔮 REVIEW</button>
-    </div>
-    <div class="panel">
-        <h2>🔄 UPD / 🚀 UPG</h2>
-        <div class="stat-row"><span>Changes:</span> <b id="updChanges">0</b></div>
-        <div class="stat-row"><span>Upgrades:</span> <b id="upgCount">0</b></div>
-        <button onclick="runUpd()">🔄 UPDATE</button>
-        <button onclick="runUpg()">🚀 UPGRADE</button>
-    </div>
-</div>
-
-<!-- LOG -->
-<div class="panel">
-    <h2>📜 EARN PROTOKOLL</h2>
-    <div class="log" id="log">[init] EARN KERNEL initialisiert.</div>
-</div>
-
-<footer>⚖️ EVO-GEOLEGAL · iki1uc © · Code nutzbar, Logik unkopierbar.</footer>
 
 <script>
 // ============================================================
-// EARN KERNEL · DAS WAHRE LEBEN
+// LEBEN VERALGORITHMIESIERT · 756 ACHSEN
 // ============================================================
 
-// 1. STATE
-const state = {
-    rith: 4,
-    modules: {
-        evomind: { active: false },
-        ecotaal: { active: false },
-        evocity: { active: false },
-        our_earn: { active: false },
-        evomarkt: { active: false },
-        newada: { active: false }
-    },
-    p0: false, p1: false, p2: false,
-    rev: { score: 0, emotion: "NEUTRAL", runs: 0 },
-    upd: { changes: 0, level: 0 },
-    upg: { count: 0, level: 0 },
-    boot: { status: "READY", ram: 0 },
-    newada: { state: "IDLE", orbit: "PASSIV", earn: 0 }
+// ─── CANVAS ──────────────────────────────────────────────────
+const canvas = document.getElementById('lifeCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, cx, cy;
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width || 1000;
+  canvas.height = rect.height || (rect.width * 9/16) || 560;
+  W = canvas.width; H = canvas.height;
+  cx = W/2; cy = H/2;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// ─── DOM ────────────────────────────────────────────────────
+const logDiv = document.getElementById('log');
+const axisColors = {
+  3: '#ff4444',
+  9: '#ffaa00',
+  27: '#00ff88',
+  81: '#00ccff',
+  243: '#ff66ff',
+  756: '#ffd700'
 };
 
-// 2. LOG
-function log(msg) {
-    const el = document.getElementById("log");
-    const e = document.createElement("div");
-    e.textContent = msg;
-    el.appendChild(e);
-    el.scrollTop = el.scrollHeight;
+function log(msg, type = 'hl') {
+  const entry = document.createElement('div');
+  const time = new Date().toLocaleTimeString();
+  const cls = ['hl','ok','flow','whirl'].includes(type) ? type : 'hl';
+  entry.innerHTML = `<div>[${time}] <span class="${cls}">${msg}</span></div>`;
+  logDiv.appendChild(entry);
+  logDiv.scrollTop = logDiv.scrollHeight;
+  while (logDiv.children.length > 50) logDiv.removeChild(logDiv.firstChild);
 }
 
-// 3. UI UPDATE
+// ─── LIFE_ALGO ──────────────────────────────────────────────
+const LIFE = {
+  time: 0,
+  pulse: 0,
+  syn: 0,
+  freund: 0,
+  quandt: 1.0,
+  earn: 0,
+  axis: {
+    3: { value: 3, label: "UR", status: 0, live: 0, phase: 0 },
+    9: { value: 9, label: "KERN", status: 0, live: 0, phase: 0 },
+    27: { value: 27, label: "ORBIT", status: 0, live: 0, phase: 0 },
+    81: { value: 81, label: "RAUM", status: 0, live: 0, phase: 0 },
+    243: { value: 243, label: "KANAL", status: 0, live: 0, phase: 0 },
+    756: { value: 756, label: "LEBEN", status: 0, live: 0, phase: 0 }
+  },
+
+  pump() {
+    this.time += 0.02;
+    this.pulse = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(this.time * 0.9));
+    this.syn = 0.2 + 0.8 * (0.5 + 0.5 * Math.sin(this.time * 0.7));
+    this.freund = this.syn * Math.sin(this.time * 0.7 + Math.PI/2) * this.quandt;
+    this.earn += (this.syn * 0.01 + this.pulse * 0.005) * this.quandt;
+    this.updateAxis();
+    return this;
+  },
+
+  updateAxis() {
+    const keys = Object.keys(this.axis);
+    keys.forEach((key, idx) => {
+      const a = this.axis[key];
+      const base = this.syn * 0.3 + this.pulse * 0.2 + this.freund * 0.1 + this.quandt * 0.1;
+      const weightFactor = (idx + 1) / 6;
+      a.status = Math.min(1, Math.max(0, base * (1 + weightFactor * 0.5)));
+      a.phase = Math.sin(this.time * (0.1 + idx * 0.05) + idx * 1.2);
+      a.live = a.status * (0.7 + 0.3 * a.phase);
+      if (key === "756") {
+        a.live = Math.min(1, a.live * 1.3 + 0.1);
+        a.status = Math.min(1, a.status * 1.2 + 0.05);
+      }
+    });
+  },
+
+  translateAxis() {
+    const result = {};
+    const keys = Object.keys(this.axis);
+    keys.forEach(key => {
+      const a = this.axis[key];
+      result[key] = {
+        value: a.value,
+        label: a.label,
+        live: a.live,
+        status: a.status,
+        phase: a.phase,
+        translated: a.value * (0.5 + 0.5 * a.live),
+        meaning: a.live > 0.5 ? "LEBENDIG" : "SCHWEBEND"
+      };
+    });
+    return result;
+  },
+
+  status() {
+    return {
+      time: this.time,
+      pulse: this.pulse,
+      syn: this.syn,
+      freund: this.freund,
+      quandt: this.quandt,
+      earn: this.earn,
+      axis: this.translateAxis()
+    };
+  },
+
+  run(steps = 10) {
+    for (let i = 0; i < steps; i++) this.pump();
+    return this.status();
+  }
+};
+
+// ─── RENDER ──────────────────────────────────────────────────
+function render() {
+  ctx.clearRect(0, 0, W, H);
+
+  const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, W*0.6);
+  grad.addColorStop(0, `rgba(0,20,40,${0.3 + LIFE.syn * 0.2})`);
+  grad.addColorStop(1, 'rgba(0,0,10,0.8)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  const axisKeys = Object.keys(LIFE.axis);
+
+  // ─── ACHSEN-RINGE ──────────────────────────────────────────
+  axisKeys.forEach((key, idx) => {
+    const a = LIFE.axis[key];
+    const radius = W * 0.08 + (idx / axisKeys.length) * W * 0.35;
+    const alpha = 0.02 + a.live * 0.15;
+    const color = axisColors[key] || '#00ccff';
+
+    ctx.strokeStyle = color.replace(')', `,${alpha})`).replace('rgb', 'rgba');
+    ctx.lineWidth = 0.5 + a.live * 2;
+    ctx.setLineDash([2, 6 + (1 - a.live) * 6]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // ─── ACHSEN-PARTIKEL ───────────────────────────────────────
+  axisKeys.forEach((key, idx) => {
+    const a = LIFE.axis[key];
+    const angle = (idx / axisKeys.length) * Math.PI * 2 + LIFE.time * 0.1;
+    const dist = W * 0.1 + a.live * W * 0.35;
+    const x = cx + Math.cos(angle) * dist * (0.5 + 0.5 * a.phase);
+    const y = cy + Math.sin(angle) * dist * (0.5 + 0.5 * a.phase);
+    const size = 3 + a.live * 12;
+    const alpha = 0.1 + a.live * 0.5;
+    const color = axisColors[key] || '#00ccff';
+
+    ctx.fillStyle = color.replace(')', `,${alpha})`).replace('rgb', 'rgba');
+    ctx.shadowBlur = 20 + a.live * 20;
+    ctx.shadowColor = color.replace(')', `,${a.live * 0.3})`).replace('rgb', 'rgba');
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Label
+    ctx.fillStyle = '#445555';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(key, x, y - size - 4);
+  });
+
+  // ─── KERN ──────────────────────────────────────────────────
+  const coreSize = 5 + LIFE.syn * 15 + LIFE.freund * 8;
+  ctx.shadowBlur = 30 + LIFE.quandt * 20;
+  ctx.shadowColor = LIFE.syn > 0.5 ? 'rgba(0,200,255,0.3)' : 'rgba(255,102,255,0.3)';
+  ctx.fillStyle = LIFE.syn > 0.5 ? 'rgba(0,200,255,0.9)' : 'rgba(255,102,255,0.9)';
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreSize, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // ─── INFO ──────────────────────────────────────────────────
+  ctx.fillStyle = '#445555';
+  ctx.font = '8px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`SYN ${LIFE.syn.toFixed(2)} · FREUND ${LIFE.freund.toFixed(2)} · EARN ${LIFE.earn.toFixed(2)}`, cx, H-8);
+}
+
+// ─── UPDATE UI ──────────────────────────────────────────────
 function updateUI() {
-    document.getElementById("rithWert").textContent = state.rith;
-    document.getElementById("newadaState").textContent = state.newada.state;
-    document.getElementById("newadaOrbit").textContent = state.newada.orbit;
-    document.getElementById("earnValue").textContent = state.newada.earn.toFixed(2);
-    document.getElementById("bootState").textContent = state.boot.status;
-    document.getElementById("ramAlloc").textContent = state.boot.ram;
-    document.getElementById("revScore").textContent = state.rev.score;
-    document.getElementById("revEmotion").textContent = state.rev.emotion;
-    document.getElementById("updChanges").textContent = state.upd.changes;
-    document.getElementById("upgCount").textContent = state.upg.count;
+  const status = LIFE.status();
+  const axis = status.axis;
 
-    document.querySelectorAll('.cmd[data-id]').forEach(el => {
-        el.classList.toggle('active', el.dataset.id === 'p1' ? state.p1 : el.dataset.id === 'p2' ? state.p2 : state.p0);
-    });
-    document.querySelectorAll('.e-module').forEach(el => {
-        el.classList.toggle('active', state.modules[el.dataset.id].active);
-    });
+  document.getElementById('pulseStatus').textContent = status.pulse.toFixed(3);
+  document.getElementById('synStatus').textContent = status.syn.toFixed(3);
+  document.getElementById('freundStatus').textContent = status.freund.toFixed(3);
+  document.getElementById('earnStatus').textContent = status.earn.toFixed(2);
+
+  Object.keys(axis).forEach(key => {
+    const el = document.getElementById(`axis-${key}`);
+    const a = axis[key];
+    if (el) {
+      el.textContent = a.live.toFixed(3);
+      const statusEl = el.parentElement.querySelector('.status');
+      if (statusEl) {
+        statusEl.textContent = a.meaning === "LEBENDIG" ? '● lebendig' : '○ schwebend';
+        statusEl.className = 'status ' + (a.meaning === "LEBENDIG" ? 'live' : 'float');
+      }
+    }
+  });
 }
 
-// 4. BOOT TYQ
-function bootTYQ() {
-    state.boot.status = "BOOTING";
-    state.boot.ram = 2048;
-    setTimeout(() => {
-        state.boot.status = "ONLINE";
-        log("⚡ TYQ BOOT: ONLINE · 2GB RAM · READY");
-    }, 1000);
-    updateUI();
+// ─── LOOP ──────────────────────────────────────────────────
+let running = true;
+
+function loop() {
+  if (!running) return;
+
+  LIFE.pump();
+  updateUI();
+  render();
+  requestAnimationFrame(loop);
 }
 
-// 5. EVO
-function runRev() {
-    state.rev.runs++;
-    state.rev.score = Math.floor(Math.random() * 100) + 1;
-    state.rev.emotion = state.rev.score > 70 ? "FREUDE" : state.rev.score > 40 ? "NEUTRAL" : "MÜDE";
-    log(`🔮 REV: Score ${state.rev.score} · Emotion ${state.rev.emotion}`);
-    updateUI();
-}
-
-function runUpd() {
-    state.upd.changes++;
-    state.upd.level = Math.floor(state.upd.changes / 5);
-    log(`🔄 UPD: ${state.upd.changes} Changes · Level ${state.upd.level}`);
-    updateUI();
-}
-
-function runUpg() {
-    state.upg.count++;
-    state.upg.level = Math.floor(state.upg.count / 3);
-    log(`🚀 UPG: ${state.upg.count} Upgrades · Level ${state.upg.level}`);
-    updateUI();
-}
-
-// 6. PIPELINE
-function runP0() {
-    state.p0 = true;
-    log("🌅 P0 · RAW → WACH");
-}
-
-function runP1() {
-    state.p1 = true;
-    log("🔥 P1 · STRUCTURE → GEORDNET");
-}
-
-function runP2() {
-    state.p2 = true;
-    log("🔗 P2 · VECTOR → RICHTUNG");
-}
-
-function runPipeline() {
-    runP0();
-    setTimeout(runP1, 200);
-    setTimeout(runP2, 400);
-    setTimeout(runRev, 600);
-    setTimeout(runUpd, 800);
-    setTimeout(runUpg, 1000);
-}
-
-// 7. 6E MODULES
-document.querySelectorAll('.e-module').forEach(el => {
-    el.addEventListener('click', () => {
-        state.modules[el.dataset.id].active = !state.modules[el.dataset.id].active;
-        updateUI();
-        log(`⚡ Modul ${el.dataset.id.toUpperCase()} ${state.modules[el.dataset.id].active ? 'AKTIVIERT' : 'DEAKTIVIERT'}`);
-    });
+// ─── CONTROLS ──────────────────────────────────────────────
+document.getElementById('btnStart').addEventListener('click', function() {
+  running = !running;
+  this.textContent = running ? '▶ START' : '⏸ PAUSE';
+  log(running ? '▶ LEBEN gestartet' : '⏸ LEBEN pausiert', running ? 'ok' : 'warn');
+  if (running) loop();
 });
 
-// 8. INIT
-updateUI();
-log("🌀 EARN KERNEL initialisiert.");
-log("🌀 6E-System bereit: evomind → ecotaal → evocity → our earn → evomarkt → newada");
+document.getElementById('btnQuandt').addEventListener('click', function() {
+  LIFE.quandt = Math.min(3.0, LIFE.quandt + 0.2);
+  log(`🌀 QUANDT: ${LIFE.quandt.toFixed(2)}`, 'whirl');
+});
+
+document.getElementById('btnPulse').addEventListener('click', function() {
+  LIFE.pulse = Math.min(1.0, LIFE.pulse + 0.1);
+  log(`❤️ PULS: ${LIFE.pulse.toFixed(2)}`, 'flow');
+});
+
+document.getElementById('btnReset').addEventListener('click', function() {
+  LIFE.time = 0;
+  LIFE.pulse = 0;
+  LIFE.syn = 0;
+  LIFE.freund = 0;
+  LIFE.quandt = 1.0;
+  LIFE.earn = 0;
+  Object.keys(LIFE.axis).forEach(key => {
+    LIFE.axis[key].status = 0;
+    LIFE.axis[key].live = 0;
+    LIFE.axis[key].phase = 0;
+  });
+  log('⟲ RESET · Leben zurückgesetzt', 'ok');
+});
+
+// ─── TASTATUR ──────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('btnStart').click(); }
+  if (e.key === 'q' || e.key === 'Q') document.getElementById('btnQuandt').click();
+  if (e.key === 'p' || e.key === 'P') document.getElementById('btnPulse').click();
+  if (e.key === 'x' || e.key === 'X') document.getElementById('btnReset').click();
+});
+
+// ─── INIT ──────────────────────────────────────────────────
+log('⌨️  space=Start  q=QUANDT  p=PULS  x=RESET', 'hl');
+log('🌀 756 ACHSEN · LEBEN VERALGORITHMIESIERT · NICHT EGAL', 'ok');
+
+// 5 Sekunden laufen lassen, dann starten
+setTimeout(() => {
+  running = true;
+  document.getElementById('btnStart').textContent = '⏸ PAUSE';
+  log('▶ LEBEN automatisch gestartet', 'ok');
+  loop();
+}, 500);
 </script>
 
 </body>
