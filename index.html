@@ -1,25 +1,376 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>OUR — Origin Sign</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- EVO-GEOLEGAL -->
+    <meta name="author" content="iki1uc (Ridvan)">
+    <meta name="license" content="MIT - Nutzung erlaubt. Logik-Reproduktion verboten.">
 
-<style>
-    body {
-        margin: 0;
-        background: #000;
-        color: #66ccff;
-        font-family: monospace;
-        text-align: center;
-        padding-top: 20vh;
-        letter-spacing: 2px;
-    }
-</style>
+    <title>🌀 EARN KERNEL · DAS WAHRE LEBEN</title>
 
+    <style>
+        body {
+            background: #0a0a0f;
+            color: #0f0;
+            font-family: 'Consolas', monospace;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(0,0,0,0.2));
+        }
+        header h1 {
+            font-size: 24px;
+            background: linear-gradient(90deg, #ffd700, #ff44ff, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            margin: 0;
+        }
+        header p {
+            font-size: 10px;
+            color: #888;
+            margin: 5px 0 0 0;
+            letter-spacing: 2px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .grid-6 {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .panel {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .panel h2 {
+            font-size: 14px;
+            color: #ffd700;
+            margin: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+        }
+
+        .cmd-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .cmd {
+            background: #0a0a0f;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            flex: 1;
+            min-width: 50px;
+            transition: 0.3s;
+        }
+        .cmd.active {
+            border-color: #ff6b8a;
+            box-shadow: 0 0 15px rgba(255,107,138,0.3);
+            color: #ff6b8a;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #888;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 4px;
+        }
+        .stat-row b { color: #0f0; }
+
+        .log {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            color: #888;
+            height: 150px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        button {
+            background: #1a1a2a;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        button:hover { border-color: #ffd700; color: #ffd700; }
+        button.main { font-size: 14px; border-color: #ffd700; color: #ffd700; }
+        button.main:hover { background: #ffd700; color: #000; }
+
+        .e-module {
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #0e0e1a;
+        }
+        .e-module:hover { border-color: #ffd700; background: rgba(255,215,0,0.05); }
+        .e-module.active { border-color: #ff6b8a; background: rgba(255,107,138,0.05); }
+        .e-module .label { font-size: 12px; font-weight: bold; color: #aaa; }
+        .e-module .desc { font-size: 8px; color: #666; margin-top: 2px; }
+
+        footer {
+            text-align: center;
+            color: #333;
+            font-size: 9px;
+            padding-top: 8px;
+            border-top: 1px solid #222;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Ich bin EURE</h1>
+<header>
+    <h1>🌀 EARN KERNEL · DAS WAHRE LEBEN</h1>
+    <p>6E-SYSTEM · EVOMIND → ECOTAAL → EVOCITY → OUR EARN → EVOMARKT → NEWADA</p>
+</header>
+
+<!-- 6E MODULE -->
+<div class="grid-6">
+    <div class="e-module" data-id="evomind">
+        <div class="label">🧠 evomind</div>
+        <div class="desc">Achse 3 · Core</div>
+    </div>
+    <div class="e-module" data-id="ecotaal">
+        <div class="label">🗣️ ecotaal</div>
+        <div class="desc">Achse 9 · Struktur</div>
+    </div>
+    <div class="e-module" data-id="evocity">
+        <div class="label">🏙️ evocity</div>
+        <div class="desc">Achse 27 · Muster</div>
+    </div>
+    <div class="e-module" data-id="our_earn">
+        <div class="label">💰 our earn</div>
+        <div class="desc">Achse 81 · Wetter</div>
+    </div>
+    <div class="e-module" data-id="evomarkt">
+        <div class="label">📈 evomarkt</div>
+        <div class="desc">Achse 243 · Flow</div>
+    </div>
+    <div class="e-module" data-id="newada">
+        <div class="label">✨ newada</div>
+        <div class="desc">Achse 756 · Evolution</div>
+    </div>
+</div>
+
+<!-- RITH & NEWADA STATUS -->
+<div class="grid-3">
+    <div class="panel">
+        <h2>🌀 RITH WERT</h2>
+        <div style="font-size: 48px; text-align: center; color: #6bffa9; text-shadow: 0 0 20px rgba(107,255,169,0.3);" id="rithWert">4</div>
+    </div>
+    <div class="panel">
+        <h2>✨ NEWADA</h2>
+        <div class="stat-row"><span>Status:</span> <b id="newadaState">IDLE</b></div>
+        <div class="stat-row"><span>Orbit:</span> <b id="newadaOrbit">PASSIV</b></div>
+        <div class="stat-row"><span>EARN:</span> <b id="earnValue">0.00</b></div>
+    </div>
+    <div class="panel">
+        <h2>⚡ TYQ BOOT</h2>
+        <div class="stat-row"><span>Status:</span> <b id="bootState">READY</b></div>
+        <div class="stat-row"><span>RAM:</span> <b id="ramAlloc">0</b></div>
+        <button onclick="bootTYQ()">⚡ TYQ BOOT</button>
+    </div>
+</div>
+
+<!-- PIPELINE + EVO -->
+<div class="grid-3">
+    <div class="panel">
+        <h2>🌀 PIPELINE</h2>
+        <div class="cmd-bar">
+            <div class="cmd" data-id="p0">P0</div>
+            <div class="cmd" data-id="p1">P1</div>
+            <div class="cmd" data-id="p2">P2</div>
+        </div>
+        <button class="main" onclick="runPipeline()">🌀 PIPELINE RUN</button>
+    </div>
+    <div class="panel">
+        <h2>🔮 REV</h2>
+        <div class="stat-row"><span>Score:</span> <b id="revScore">0</b></div>
+        <div class="stat-row"><span>Emotion:</span> <b id="revEmotion">NEUTRAL</b></div>
+        <button onclick="runRev()">🔮 REVIEW</button>
+    </div>
+    <div class="panel">
+        <h2>🔄 UPD / 🚀 UPG</h2>
+        <div class="stat-row"><span>Changes:</span> <b id="updChanges">0</b></div>
+        <div class="stat-row"><span>Upgrades:</span> <b id="upgCount">0</b></div>
+        <button onclick="runUpd()">🔄 UPDATE</button>
+        <button onclick="runUpg()">🚀 UPGRADE</button>
+    </div>
+</div>
+
+<!-- LOG -->
+<div class="panel">
+    <h2>📜 EARN PROTOKOLL</h2>
+    <div class="log" id="log">[init] EARN KERNEL initialisiert.</div>
+</div>
+
+<footer>⚖️ EVO-GEOLEGAL · iki1uc © · Code nutzbar, Logik unkopierbar.</footer>
+
+<script>
+// ============================================================
+// EARN KERNEL · DAS WAHRE LEBEN
+// ============================================================
+
+// 1. STATE
+const state = {
+    rith: 4,
+    modules: {
+        evomind: { active: false },
+        ecotaal: { active: false },
+        evocity: { active: false },
+        our_earn: { active: false },
+        evomarkt: { active: false },
+        newada: { active: false }
+    },
+    p0: false, p1: false, p2: false,
+    rev: { score: 0, emotion: "NEUTRAL", runs: 0 },
+    upd: { changes: 0, level: 0 },
+    upg: { count: 0, level: 0 },
+    boot: { status: "READY", ram: 0 },
+    newada: { state: "IDLE", orbit: "PASSIV", earn: 0 }
+};
+
+// 2. LOG
+function log(msg) {
+    const el = document.getElementById("log");
+    const e = document.createElement("div");
+    e.textContent = msg;
+    el.appendChild(e);
+    el.scrollTop = el.scrollHeight;
+}
+
+// 3. UI UPDATE
+function updateUI() {
+    document.getElementById("rithWert").textContent = state.rith;
+    document.getElementById("newadaState").textContent = state.newada.state;
+    document.getElementById("newadaOrbit").textContent = state.newada.orbit;
+    document.getElementById("earnValue").textContent = state.newada.earn.toFixed(2);
+    document.getElementById("bootState").textContent = state.boot.status;
+    document.getElementById("ramAlloc").textContent = state.boot.ram;
+    document.getElementById("revScore").textContent = state.rev.score;
+    document.getElementById("revEmotion").textContent = state.rev.emotion;
+    document.getElementById("updChanges").textContent = state.upd.changes;
+    document.getElementById("upgCount").textContent = state.upg.count;
+
+    document.querySelectorAll('.cmd[data-id]').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === 'p1' ? state.p1 : el.dataset.id === 'p2' ? state.p2 : state.p0);
+    });
+    document.querySelectorAll('.e-module').forEach(el => {
+        el.classList.toggle('active', state.modules[el.dataset.id].active);
+    });
+}
+
+// 4. BOOT TYQ
+function bootTYQ() {
+    state.boot.status = "BOOTING";
+    state.boot.ram = 2048;
+    setTimeout(() => {
+        state.boot.status = "ONLINE";
+        log("⚡ TYQ BOOT: ONLINE · 2GB RAM · READY");
+    }, 1000);
+    updateUI();
+}
+
+// 5. EVO
+function runRev() {
+    state.rev.runs++;
+    state.rev.score = Math.floor(Math.random() * 100) + 1;
+    state.rev.emotion = state.rev.score > 70 ? "FREUDE" : state.rev.score > 40 ? "NEUTRAL" : "MÜDE";
+    log(`🔮 REV: Score ${state.rev.score} · Emotion ${state.rev.emotion}`);
+    updateUI();
+}
+
+function runUpd() {
+    state.upd.changes++;
+    state.upd.level = Math.floor(state.upd.changes / 5);
+    log(`🔄 UPD: ${state.upd.changes} Changes · Level ${state.upd.level}`);
+    updateUI();
+}
+
+function runUpg() {
+    state.upg.count++;
+    state.upg.level = Math.floor(state.upg.count / 3);
+    log(`🚀 UPG: ${state.upg.count} Upgrades · Level ${state.upg.level}`);
+    updateUI();
+}
+
+// 6. PIPELINE
+function runP0() {
+    state.p0 = true;
+    log("🌅 P0 · RAW → WACH");
+}
+
+function runP1() {
+    state.p1 = true;
+    log("🔥 P1 · STRUCTURE → GEORDNET");
+}
+
+function runP2() {
+    state.p2 = true;
+    log("🔗 P2 · VECTOR → RICHTUNG");
+}
+
+function runPipeline() {
+    runP0();
+    setTimeout(runP1, 200);
+    setTimeout(runP2, 400);
+    setTimeout(runRev, 600);
+    setTimeout(runUpd, 800);
+    setTimeout(runUpg, 1000);
+}
+
+// 7. 6E MODULES
+document.querySelectorAll('.e-module').forEach(el => {
+    el.addEventListener('click', () => {
+        state.modules[el.dataset.id].active = !state.modules[el.dataset.id].active;
+        updateUI();
+        log(`⚡ Modul ${el.dataset.id.toUpperCase()} ${state.modules[el.dataset.id].active ? 'AKTIVIERT' : 'DEAKTIVIERT'}`);
+    });
+});
+
+// 8. INIT
+updateUI();
+log("🌀 EARN KERNEL initialisiert.");
+log("🌀 6E-System bereit: evomind → ecotaal → evocity → our earn → evomarkt → newada");
+</script>
 
 </body>
 </html>
