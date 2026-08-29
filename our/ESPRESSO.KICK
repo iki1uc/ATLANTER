@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ESPRESSO.KICK · uOUR · OURu · Turbo</title>
+<style>
+  body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+  .panel { border:1px solid #0f0; padding:10px; margin-bottom:20px; }
+  .kick { color:#ffaa00; font-weight:bold; }
+  .speed { color:#00ccff; }
+</style>
+</head>
+<body>
+
+<h1>☕ ESPRESSO.KICK · <span class="kick">TURBO</span></h1>
+
+<div class="panel">
+  <h2>⚡ Kick‑Orbit</h2>
+  <pre id="kick-orbit"></pre>
+</div>
+
+<div class="panel">
+  <h2>⚡ Kick‑Axiom</h2>
+  <pre id="kick-axiom"></pre>
+</div>
+
+<div class="panel">
+  <h2>⚡ Kick‑Module</h2>
+  <pre id="kick-modules"></pre>
+</div>
+
+<script type="module">
+
+  // ─── IMPORTS ──────────────────────────────────────────
+  import { A } from "./A.js";
+  import { B } from "./B.js";
+  import { C } from "./C.js";
+  import { D } from "./D.js";
+  import { E } from "./E.js";
+  import { F } from "./F.js";
+  import { G } from "./G.js";
+  import { H } from "./H.js";
+  import { K } from "./K.js";
+  import { L } from "./L.js";
+  import { P } from "./P.js";
+  import { V } from "./V.js";
+
+  import { HighwayAxiom } from "./Highway-Axiom.js";
+  import { KomplettumAxiom } from "./Komplettum-Axiom.js";
+  import { MEAxiom } from "./ME-Axiom.js";
+  import { OperatorAxiom } from "./Operator-Axiom.js";
+  import { RADAxiom } from "./RAD-Axiom.js";
+  import { ScanAxiom } from "./Scan-Axiom.js";
+  import { SlalomAxiom } from "./Slalom-Axiom.js";
+  import { PhiAxiom } from "./Phi-Axiom.js";
+  import { IORAxiom } from "./IOR-Axiom.js";
+  import { FlagAxiom } from "./flag.vector.js";
+  import { Axiom698869 } from "./698869.js";
+
+  const modules = [A, B, C, D, E, F, G, H, K, L, P, V];
+
+  // ─── ESPRESSO.KICK ──────────────────────────────────
+  let kickSpeed = 1.0;
+  let kickFactor = 1.0;
+  let kickPulse = 0;
+
+  function espressoKick() {
+    kickPulse += 0.05;
+    kickSpeed = 1.0 + Math.sin(kickPulse) * 0.5;
+    kickFactor = 1.0 + Math.cos(kickPulse * 0.7) * 0.3;
+  }
+
+  function applyKick(value) {
+    return Math.round(value * kickFactor * kickSpeed);
+  }
+
+  // ─── TICK ──────────────────────────────────────────────
+  function tick() {
+    espressoKick();
+
+    modules.forEach(m => {
+      m.TICK += kickSpeed;
+      m.VALUE += kickSpeed;
+      m.RADIUS = Math.sqrt(m.VALUE * m.VALUE + m.TICK);
+      m.ORBIT = Math.sin(m.TICK / 10) * m.RADIUS * kickFactor;
+    });
+
+    document.getElementById("kick-orbit").innerText =
+      "⚡ SPEED: " + kickSpeed.toFixed(2) + "x\n" +
+      "⚡ FACTOR: " + kickFactor.toFixed(2) + "x\n" +
+      "A: " + A.VALUE + " | R=" + A.RADIUS + " | O=" + A.ORBIT + "\n" +
+      "B: " + B.VALUE + " | R=" + B.RADIUS + " | O=" + B.ORBIT;
+
+    document.getElementById("kick-axiom").innerText =
+      JSON.stringify({
+        turbo: {
+          speed: kickSpeed.toFixed(2),
+          factor: kickFactor.toFixed(2),
+          pulse: kickPulse.toFixed(2)
+        },
+        highway: HighwayAxiom,
+        komplettum: KomplettumAxiom,
+        me: MEAxiom,
+        operator: OperatorAxiom,
+        rad: RADAxiom,
+        scan: ScanAxiom,
+        slalom: SlalomAxiom,
+        phi: PhiAxiom,
+        ior: IORAxiom,
+        flag: FlagAxiom,
+        ax698869: Axiom698869
+      }, null, 2);
+
+    let out = "";
+    modules.forEach(m => {
+      out += "⚡ " + m.NAME + ": " + applyKick(m.VALUE) + " | R=" + applyKick(m.RADIUS) + " | O=" + applyKick(m.ORBIT) + "\n";
+    });
+    document.getElementById("kick-modules").innerText = out;
+  }
+
+  setInterval(tick, 500);
+
+</script>
+
+</body>
+</html>
