@@ -1,15 +1,27 @@
-import SYN from './SYN.LIFE.js';
+// ─── LIFE.js · S-LAYER + ATLANTER ────────────────────────────────
 
-// ─── LEBEN STARTEN ──────────────────────────────────────────
-const leben = SYN.run(20);
-console.log(leben.life);
-console.log(leben.earnAttack);
-console.log(leben.axis);
+export const LIFE = {
+  syn: 0,
+  freund: 0,
+  time: 0,
+  quandt: 1,
 
-// ─── EARN ATTIKULIEREN ──────────────────────────────────────
-const attack = SYN.earnAttack();
-console.log(attack.message);
-console.log(attack.attikulation);
+  update() {
+    this.time++;
 
-// ─── LEBEN BEI S – VISUAL ──────────────────────────────────
-console.log(`🌀 LEBEN: ${attack.status} · EARN: ${attack.earn.toFixed(2)} · LIFE: ${attack.lifeScore.toFixed(2)}`);
+    // SYN – reale Achse
+    this.syn = Math.sin(this.time * 0.05);
+
+    // FREUND – imaginäre Achse (90° versetzt)
+    this.freund = this.syn *
+      Math.sin(this.time * 0.7 + Math.PI / 2) *
+      this.quandt;
+
+    return {
+      syn: this.syn,
+      freund: this.freund,
+      time: this.time,
+      quandt: this.quandt
+    };
+  }
+};
