@@ -5,3 +5,5 @@ export function baseDQF(x, y, z) {
     F: `F-${Math.abs(x - y)}`
   };
 }
+// 3.js – Ursprung
+export const ACHSE_3 = { value: 3, label: "UR", type: "origin" };
