@@ -8,5 +8,5 @@ export function RIR_KIT(input) {
     return { status: "reject", source: "RIR" };
   }
 
-  return KIT_RUN(input);
+  return KIT.run(input);
 }
